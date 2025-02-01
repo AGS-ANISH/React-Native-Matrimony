@@ -109,6 +109,8 @@ android {
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
+    implementation project(':react-native-vector-icons')
+
     implementation("com.facebook.react:react-android")
 
     if (hermesEnabled.toBoolean()) {
