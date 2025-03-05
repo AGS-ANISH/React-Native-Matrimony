@@ -16,7 +16,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [userNameError, setUserNameError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
 
-  const isValidUserName = (userName: string) => /^[a-zA-Z0-9._-]{3,20}$/.test(userName);
+  const isValidUserName = (userName: string) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const mobileRegex = /^[0-9]{10}$/; // Assumes a 10-digit mobile number
+    return emailRegex.test(userName) || mobileRegex.test(userName);
+  };
   const isValidPassword = (password: string) => password.length >= 6;
 
   const handleLogin = async () => {
@@ -32,7 +36,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     }
 
     if (!isValidUserName(trimmedUserName)) {
-      Alert.alert('Error', 'Username must be 3-20 characters long and can only contain letters, numbers, dots, underscores, or hyphens.');
+      Alert.alert('Error', 'Enter a valid email ID or a 10-digit mobile number.');
       return;
     }
     if (!isValidPassword(trimmedPassword)) {
@@ -74,7 +78,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       {/* Username Input */}
       <TextInput
         style={[styles.input, userNameError && styles.inputError]}
-        placeholder="Username"
+        placeholder="Email or Mobile Number"
         placeholderTextColor="#aaa"
         value={userName}
         onChangeText={(text) => {
